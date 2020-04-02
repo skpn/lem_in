@@ -6,7 +6,7 @@
 #    By: skpn <skpn@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/02 21:32:05 by sikpenou          #+#    #+#              #
-#    Updated: 2020/04/02 14:31:53 by skpn             ###   ########.fr        #
+#    Updated: 2020/04/02 17:57:23 by skpn             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -83,8 +83,8 @@ all: $(NAME)
 
 $(NAME): $(LIBS) $(OBJS) Makefile
 	/bin/echo compiling $(NAME)
-	echo $(CC) -o $(NAME) $(OBJS) $(LIBS)
-	$(CC) -o $(NAME) $(OBJS) $(LIBS)
+	echo $(CC) -o $(NAME) $(OBJS) lib/libft/libft.a
+	$(CC) -o $(NAME) $(OBJS) lib/libft/libft.a
 
 $(OBJ_DIR)/%.o : %.c $(INCS) $(LIBS) Makefile
 	mkdir -p $(OBJ_DIR)
@@ -94,12 +94,15 @@ $(LIBS): FORCE
 	make -C $(LIB_DIR)
 
 clean: FORCE
+	make -C $(LIB_DIR) clean
 	rm -rf $(OBJS)
 
 fclean: clean FORCE
+	make -C $(LIB_DIR) fclean
 	rm -rf $(NAME)
 
 re: fclean all FORCE
+	make -C $(LIB_DIR)
 
 show:
 	echo "comp   : $(CC)\n"
