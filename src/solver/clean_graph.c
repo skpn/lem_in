@@ -6,7 +6,7 @@
 /*   By: skpn <skpn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/04 15:45:39 by sikpenou          #+#    #+#             */
-/*   Updated: 2020/04/02 12:27:24 by skpn             ###   ########.fr       */
+/*   Updated: 2020/04/07 13:23:41 by skpn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ void	kill_dead_rooms(t_lem *lem, t_room *dead_room)
 	t_lst		*parents_lst;
 	t_lst		*popped;
 	t_room		*parent;
-	t_h_elem	*dead_room_hash_elem;
 
 	if (dead_room == lem->start)
 		lem->start = NULL;
@@ -55,7 +54,5 @@ void	kill_dead_rooms(t_lem *lem, t_room *dead_room)
 		if (parent->children->first == NULL)
 			kill_dead_rooms(lem, parent);
 	}
-	if (!(dead_room_hash_elem = ft_h_pop_elem(lem->table, dead_room->name)))
-		return ;
-	ft_h_free_elem(lem->table, dead_room_hash_elem, FREE_BOTH);
+	ft_h_free_elem_by_key(lem->table, dead_room->name);
 }

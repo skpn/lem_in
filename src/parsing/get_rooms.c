@@ -6,7 +6,7 @@
 /*   By: skpn <skpn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/19 15:41:30 by sikpenou          #+#    #+#             */
-/*   Updated: 2020/04/02 13:49:00 by skpn             ###   ########.fr       */
+/*   Updated: 2020/04/07 19:03:40 by skpn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,17 @@ static int		skip_coord(t_lem *lem)
 		lem->pos++;
 	}
 	if (lem->copy[lem->pos++] != '\n')
+	{
 		return (PARSING_ERROR);
-	return (1);
+	}
+	return (EXIT_SUCCESS);
 }
 
 static int		check_same_name(t_lem *lem, char *name_to_check)
 {
 	if (ft_h_get_elem(lem->table, name_to_check))
 		return (PARSING_ERROR);
-	return (1);
+	return (EXIT_SUCCESS);
 }
 
 static int		get_name(t_lem *lem, char **name)
@@ -57,7 +59,7 @@ static int		get_name(t_lem *lem, char **name)
 		else if (c == '-')
 		{
 			lem->pos = start_pos;
-			return (0);
+			return (CONTINUE);
 		}
 	}
 	*name = lem->copy + start_pos;
@@ -75,12 +77,12 @@ int				get_rooms(t_lem *lem, char *anthill_copy)
 	check_start_end = ACCEPT_START_END;
 	while (anthill_copy[lem->pos] == '#')
 	{
-		if (manage_com(lem, anthill_copy, &check_start_end) == PARSING_ERROR)
+		if (manage_com(lem, anthill_copy, &check_start_end) != EXIT_SUCCESS)
 			return (PARSING_ERROR);
 	}
-	if ((ret = get_name(lem, &name)) < 1)
+	if ((ret = get_name(lem, &name)) != EXIT_SUCCESS)
 		return (ret);
-	if (check_same_name(lem, name) <= 0)
+	if (check_same_name(lem, name) != EXIT_SUCCESS)
 		return (PARSING_ERROR);
 	if (!(room = alloc_new_room(name)))
 		return (MALLOC_ERROR);
@@ -90,5 +92,5 @@ int				get_rooms(t_lem *lem, char *anthill_copy)
 		lem->start = room;
 	else if (check_start_end == END)
 		lem->end = room;
-	return (1);
+	return (EXIT_SUCCESS);
 }

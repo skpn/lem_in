@@ -6,7 +6,7 @@
 /*   By: skpn <skpn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/03 14:36:44 by sikpenou          #+#    #+#             */
-/*   Updated: 2020/04/02 13:32:03 by skpn             ###   ########.fr       */
+/*   Updated: 2020/04/08 09:51:52 by skpn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void			start_joined_to_end(t_lem *lem)
 	ft_printf("\n");
 }
 
-/*
 static void		print_ant(t_display *display, t_ant *ant)
 {
 	t_room		*room;
@@ -72,7 +71,6 @@ static void		print_ants(t_display *display)
 	}
 	ft_printf("\n");
 }
-*/
 
 int				display_lem(t_lem *lem)
 {
@@ -81,19 +79,12 @@ int				display_lem(t_lem *lem)
 	if (!(display = set_display(lem)))
 		return (0);
 	lem->display = display;
-	/*
-	write(1, lem->anthill, lem->pos);
+	write(1, lem->anthill, lem->anthill_size);
 	while (display->turn < lem->turns)
 	{
 		display->first_print = 1;
 		print_ants(display);
 		display->turn++;
 	}
-	*/
-	print_config(lem->final_config);
-	print_room(lem->end);
-	print_room(lem->start);
-	print_lem(lem);
-	h_print_table_data(lem->table);
 	return (1);
 }

@@ -6,38 +6,43 @@
 /*   By: skpn <skpn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 17:01:47 by sikpenou          #+#    #+#             */
-/*   Updated: 2020/04/02 13:36:28 by skpn             ###   ########.fr       */
+/*   Updated: 2020/04/07 16:26:25 by skpn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LEM_IN_H
 # define LEM_IN_H
 
+# include "unistd.h"
 # include "libft.h"
 
-# define LEM_BUFF 500000
-# define MAX_SIZE 1500000
-# define ACCEPT_START_END 1
-# define REJECT_START_END 2
-# define START 3
-# define END 4
-# define MALLOC_ERROR -1
-# define PARSING_ERROR -2
+# define CONTINUE 1
+# define ACCEPT_START_END 2
+# define REJECT_START_END 3
+# define START 4
+# define END 5
+
 # define PARENT 1
 # define BROTHER 2
 # define CHILD 3
 
-# define EACH 0u
-# define DIFF 1u
-# define SUP 2u
-# define INF 3u
-# define INF_EQUAL 4u
-# define SUP_EQUAL 5u
-# define NB_ALGO_LAUNCHS 12u
+# define EACH 0
+# define DIFF 1
+# define SUP 2
+# define INF 3
+# define INF_EQUAL 4
+# define SUP_EQUAL 5
+# define NB_ALGO_LAUNCHS 12
 
 # define LIVES_UPPER_LIMIT 1000
 # define LIVES_LOWER_LIMIT 1000
+
 # define DEBUG 1
+
+# define MALLOC_ERROR -1
+# define PARSING_ERROR -2
+
+# define POS ft_printf("%s - %d\n", __FILE__, __LINE__)
 
 typedef struct		s_path
 {
@@ -93,7 +98,6 @@ typedef struct		s_display
 typedef struct		s_lem
 {
 	unsigned		nb_ants;
-	unsigned		nb_rooms;
 	unsigned		nb_tubes;
 	unsigned		shortest;
 	unsigned		max_dist;
@@ -119,47 +123,61 @@ typedef struct		s_lem
 	t_display		*display;
 }					t_lem;
 
+t_config			*alloc_new_config(void);
+t_display			*alloc_new_display(unsigned total_rooms);
+t_lvl				*alloc_new_lvl(void);
+t_path				*alloc_new_path(void);
+t_room				*alloc_new_room(char *name);
+
+void				balance_load(t_lem *lem);
+int					best_to_final(t_lem *lem);
+
+t_path				*copy_generic_path(t_lem *lem);
+
+int					display_lem(t_lem *lem);
+
+int					exit_lem(t_lem *lem, int ret);
+
+void				free_config(t_config **config);
+void				free_lvl(t_lvl **lvl);
+void				free_path(t_path **path);
+void				free_paths(t_head **path);
+void				free_table_room(t_h_elem *room_h_elem);
+
 int					get_anthill(t_lem *lem);
 int					get_rooms(t_lem *lem, char *anthill_copy);
 int					get_tubes(t_lem *lem, char *anthill_copy);
-int					manage_com(t_lem *lem, char *anthill, int *opt);
-int					set_graph(t_lem *lem);
-t_lem				*alloc_new_lem(void);
-t_room				*alloc_new_room(char *name);
-t_config			*alloc_new_config(void);
-t_path				*alloc_new_path(void);
-t_lvl				*alloc_new_lvl(void);
-t_display			*alloc_new_display(unsigned total_rooms);
-int					parse_input(t_lem *lem);
-void				set_next_lvl_dists(t_lvl *lvl);
-void				set_next_lvl_families(t_lvl *lvl, t_room *end);
+
+int					init_lem(t_lem *lem);
+
 void				kill_dead_rooms(t_lem *lem, t_room *dead_room);
 void				kill_end_children(t_room *end, unsigned max_dist);
-int					seek_paths(t_lem *lem);
-int					try_path(t_lem *lem);
-t_path				*copy_generic_path(t_lem *lem);
+
+int					manage_com(t_lem *lem, char *anthill, int *opt);
 int					manage_valid_path(t_lem *lem);
-int					update_best_config(t_lem *lem);
-int					best_to_final(t_lem *lem);
-void				balance_load(t_lem *lem);
-void				start_joined_to_end(t_lem *lem);
-t_display			*set_display(t_lem *lem);
-int					display_lem(t_lem *lem);
-int					exit_lem(t_lem **lem, char *msg, int ret);
-void				free_table_room(void **room);
-void				free_config(t_config **config);
-void				free_path(t_path **path);
-void				free_paths(t_head **path);
-void				free_lvl(t_lvl **lvl);
+
+int					parse_input(t_lem *lem);
 void				print_anthill(char *lem);
-void				print_lem(t_lem *lem);
-int					print_room_elem(t_h_elem *room_elem);
-void				print_room(t_room *room);
+void				print_ants_tab(t_ant **tab);
 void				print_config(t_config *config);
+void				print_display(t_display *display);
+void				print_lem(t_lem *lem);
+void				print_lvl(t_lvl *lvl);
 void				print_path(t_path *path);
 void				print_paths(t_head *path_head);
-void				print_lvl(t_lvl *lvl);
-void				print_ants_tab(t_ant **tab);
-void				print_display(t_display *display);
+int					print_room_elem(t_h_elem *room_elem);
+void				print_room(t_room *room);
+
+int					seek_paths(t_lem *lem);
+t_display			*set_display(t_lem *lem);
+int					set_graph(t_lem *lem);
+void				set_next_lvl_dists(t_lvl *lvl);
+void				set_next_lvl_families(t_lvl *lvl, t_room *end);
+void				start_joined_to_end(t_lem *lem);
+
+int					try_path(t_lem *lem);
+
+int					update_best_config(t_lem *lem);
+
 
 #endif

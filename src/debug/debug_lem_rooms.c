@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   debug_rooms_paths_lem.c                            :+:      :+:    :+:   */
+/*   debug_lem_rooms.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sikpenou <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: skpn <skpn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/03 14:17:42 by sikpenou          #+#    #+#             */
-/*   Updated: 2020/01/14 14:31:35 by sikpenou         ###   ########.fr       */
+/*   Updated: 2020/04/07 16:27:35 by skpn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ void	print_lem(t_lem *lem)
 	ft_printf("PRINTING LEM\n");
 	ft_printf("---\nLEM\n---\n");
 	ft_printf("nb_ants   : %u\n", lem->nb_ants);
-	ft_printf("nb_rooms  : %u\n", lem->nb_rooms);
 	ft_printf("shortest  : %u\n", lem->shortest);
 	ft_printf("max_dist  : %u\n", lem->max_dist);
 }

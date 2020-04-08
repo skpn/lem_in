@@ -6,7 +6,7 @@
 #    By: skpn <skpn@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/02 21:32:05 by sikpenou          #+#    #+#              #
-#    Updated: 2020/04/02 17:57:23 by skpn             ###   ########.fr        #
+#    Updated: 2020/04/02 18:31:21 by skpn             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -83,7 +83,6 @@ all: $(NAME)
 
 $(NAME): $(LIBS) $(OBJS) Makefile
 	/bin/echo compiling $(NAME)
-	echo $(CC) -o $(NAME) $(OBJS) lib/libft/libft.a
 	$(CC) -o $(NAME) $(OBJS) lib/libft/libft.a
 
 $(OBJ_DIR)/%.o : %.c $(INCS) $(LIBS) Makefile

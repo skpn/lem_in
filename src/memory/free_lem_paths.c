@@ -6,7 +6,7 @@
 /*   By: skpn <skpn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/03 14:01:15 by sikpenou          #+#    #+#             */
-/*   Updated: 2020/04/02 12:26:09 by skpn             ###   ########.fr       */
+/*   Updated: 2020/04/04 11:00:07 by skpn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 void	free_path(t_path **path)
 {
 	ft_lstfree(&(*path)->rooms, FREE_STRUCT, LST_FREE_HEAD);
-	easyfree((void **)path);
+	gc_free((void **)path);
 }
 
 void	free_paths(t_head **paths)

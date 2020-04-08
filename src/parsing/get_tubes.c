@@ -6,7 +6,7 @@
 /*   By: skpn <skpn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/19 18:00:27 by sikpenou          #+#    #+#             */
-/*   Updated: 2020/04/02 13:49:27 by skpn             ###   ########.fr       */
+/*   Updated: 2020/04/08 09:43:54 by skpn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,14 @@ static int		add_links(t_lem *lem, char *name_1, char *name_2)
 	if (!ft_lstadd_new(room_2->children, room_1))
 		return (MALLOC_ERROR);
 	lem->nb_tubes++;
-	return (1);
+	return (EXIT_SUCCESS);
 }
 
 static int		get_link_names(t_lem *lem, char **name_1, char **name_2)
 {
 	*name_1 = lem->copy + lem->pos;
-	if (!ft_strcmp(*name_1, "\n"))
-		return (END);
+	if (!ft_strcmp(*name_1, "\n") || lem->pos >= lem->anthill_size)
+		return (CONTINUE);
 	while (lem->copy[lem->pos] && lem->copy[lem->pos] != '-')
 		lem->pos++;
 	if (lem->copy[lem->pos] != '-')
@@ -50,26 +50,24 @@ static int		get_link_names(t_lem *lem, char **name_1, char **name_2)
 	if (lem->copy[lem->pos] != '\n')
 		return (PARSING_ERROR);
 	lem->copy[lem->pos++] = 0;
-	return (1);
+	return (EXIT_SUCCESS);
 }
 
 int				get_tubes(t_lem *lem, char *anthill_copy)
 {
-	int		check_start_end;
+	int		start_end;
 	int		ret;
 	char	*name_1;
 	char	*name_2;
 
-	check_start_end = REJECT_START_END;
+	start_end = REJECT_START_END;
 	while (anthill_copy[lem->pos] == '#')
-		manage_com(lem, anthill_copy, &check_start_end);
-	if ((ret = get_link_names(lem, &name_1, &name_2)) < 1)
+		manage_com(lem, anthill_copy, &start_end);
+	if ((ret = get_link_names(lem, &name_1, &name_2)) != EXIT_SUCCESS)
 		return (ret);
-	else if (ret == END)
-		return (0);
-	if ((ret = add_links(lem, name_1, name_2)) < 1)
+	if ((ret = add_links(lem, name_1, name_2)) != EXIT_SUCCESS)
 		return (ret);
 	if (!lem->copy[lem->pos])
-		return (0);
-	return (1);
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }
