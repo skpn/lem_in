@@ -6,7 +6,7 @@
 /*   By: skpn <skpn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 15:28:02 by sikpenou          #+#    #+#             */
-/*   Updated: 2020/04/08 09:48:33 by skpn             ###   ########.fr       */
+/*   Updated: 2020/04/08 10:04:03 by skpn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,8 @@ int		parse_input(t_lem *lem)
 {
 	int			ret;
 
-	if (get_anthill(lem) != EXIT_SUCCESS)
-		return (MALLOC_ERROR);
+	if ((ret = get_anthill(lem)) != EXIT_SUCCESS)
+		return (ret);
 	while ((ret = get_ants(lem, lem->copy)) == EXIT_SUCCESS)
 		;
 	if (ret != CONTINUE)
@@ -87,6 +87,7 @@ int		parse_input(t_lem *lem)
 		;
 	if (ret != CONTINUE)
 		return (ret);
-	lem->pos = lem->anthill_size - 1;
+	if (!lem->start || !lem->end)
+		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }

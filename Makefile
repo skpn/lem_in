@@ -6,7 +6,7 @@
 #    By: skpn <skpn@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/02 21:32:05 by sikpenou          #+#    #+#              #
-#    Updated: 2020/04/02 18:31:21 by skpn             ###   ########.fr        #
+#    Updated: 2020/04/08 19:05:52 by skpn             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = lem-in
 
 CC = $(COMPILER) $(COMPILATION_FLAGS) $(DEBUG_FLAGS) $(INCLUDE_FLAGS)
 
-COMPILER = gcc
+COMPILER = clang
 
 COMPILATION_FLAGS = -Wall -Werror -Wextra
 

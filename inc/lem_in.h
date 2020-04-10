@@ -6,7 +6,7 @@
 /*   By: skpn <skpn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 17:01:47 by sikpenou          #+#    #+#             */
-/*   Updated: 2020/04/07 16:26:25 by skpn             ###   ########.fr       */
+/*   Updated: 2020/04/10 09:59:17 by skpn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,13 @@
 # define INF 3
 # define INF_EQUAL 4
 # define SUP_EQUAL 5
-# define NB_ALGO_LAUNCHS 12
+# define NB_ALGO_LAUNCHS 16
 
 # define LIVES_UPPER_LIMIT 1000
 # define LIVES_LOWER_LIMIT 1000
 
 # define DEBUG 1
 
-# define MALLOC_ERROR -1
 # define PARSING_ERROR -2
 
 # define POS ft_printf("%s - %d\n", __FILE__, __LINE__)

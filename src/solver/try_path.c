@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   try_path.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sikpenou <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: skpn <skpn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/13 15:31:01 by sikpenou          #+#    #+#             */
-/*   Updated: 2020/01/14 19:31:58 by sikpenou         ###   ########.fr       */
+/*   Updated: 2020/04/10 10:04:32 by skpn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,14 @@ static int		check_room(t_lem *lem, t_room *child, t_room *next_room)
 		return (0);
 	if (!next_room)
 		return (1);
-	if (lem->algo_flip >= 8
+	if (lem->algo_flip % 3 == 0
 		&& ((child->walk << 1) + child->dist <= (next_room->walk << 1)
 		+ next_room->dist))
 		return (1);
-	else if (lem->algo_flip <= 7 && lem->algo_flip >= 4
+	else if (lem->algo_flip % 3 == 1
 		&& (child->walk + child->dist <= next_room->walk + next_room->dist))
 		return (1);
-	else if (lem->algo_flip <= 3
+	else if (lem->algo_flip % 3 == 2
 		&& child->walk + 3 * child->dist <= next_room->walk
 		+ 3 * next_room->dist)
 		return (1);
@@ -75,13 +75,16 @@ static t_room	*get_next_room(t_lem *lem, t_room *room)
 			next_room = child;
 		child_lst = child_lst->next;
 	}
-	child_lst = room->children->first;
-	while (child_lst)
+	if (lem->algo_flip > 13)
 	{
-		child = child_lst->content;
-		if (check_room(lem, child, next_room))
-			next_room = child;
-		child_lst = child_lst->next;
+		child_lst = room->children->first;
+		while (child_lst)
+		{
+			child = child_lst->content;
+			if (check_room(lem, child, next_room))
+				next_room = child;
+			child_lst = child_lst->next;
+		}
 	}
 	return (next_room);
 }

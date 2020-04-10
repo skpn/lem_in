@@ -6,7 +6,7 @@
 /*   By: skpn <skpn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/02 21:05:19 by sikpenou          #+#    #+#             */
-/*   Updated: 2020/04/02 13:58:38 by skpn             ###   ########.fr       */
+/*   Updated: 2020/04/08 18:56:32 by skpn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,11 @@ static int	add_children_to_next_lvl(t_head *rooms, t_head *children)
 		{
 			child->has_lvl = 1;
 			if (!(ft_lstadd_new(rooms, child)))
-				return (0);
+				return (EXIT_FAILURE);
 		}
 		elem = elem->next;
 	}
-	return (1);
+	return (EXIT_SUCCESS);
 }
 
 static int	get_next_lvl_rooms(t_lem *lem, t_lvl *lvl)
@@ -40,16 +40,15 @@ static int	get_next_lvl_rooms(t_lem *lem, t_lvl *lvl)
 	t_room	*parent;
 
 	current_rooms = lvl->rooms->first;
-	lvl->rooms->first = NULL;
-	lvl->rooms->last = NULL;
-	lvl->rooms->size = 0;
+	ft_memset(lvl->rooms, 0, sizeof(*(lvl->rooms)));
 	while (current_rooms)
 	{
 		parent = current_rooms->content;
 		if (parent->children->first != NULL)
 		{
-			if (!add_children_to_next_lvl(lvl->rooms, parent->children))
-				return (0);
+			if (add_children_to_next_lvl(lvl->rooms, parent->children)
+				!= EXIT_SUCCESS)
+				return (EXIT_FAILURE);
 		}
 		else if (parent != lem->end)
 			kill_dead_rooms(lem, parent);
@@ -57,32 +56,7 @@ static int	get_next_lvl_rooms(t_lem *lem, t_lvl *lvl)
 		current_rooms = current_rooms->next;
 		ft_lstfree_elem(&tmp, FREE_STRUCT);
 	}
-	return (1);
-}
-
-static int	set_lvls(t_lem *lem, t_lvl *lvl)
-{
-	t_lst	*end_elem;
-
-	while (lvl->dist < lem->max_dist && lvl->rooms->first)
-	{
-		set_next_lvl_dists(lvl);
-		set_next_lvl_families(lvl, lem->end);
-		if (!get_next_lvl_rooms(lem, lvl))
-		{
-			free_lvl(&lvl);
-			return (0);
-		}
-		if (lvl->dist + 1 == lem->end->dist)
-		{
-			if ((end_elem = ft_lstpop(lvl->rooms, lem->end)))
-				ft_lstfree_elem(&end_elem, FREE_STRUCT);
-			lem->shortest = lvl->dist + 2;
-			lem->max_dist = lem->shortest + lem->nb_ants - 1;
-		}
-		lvl->dist++;
-	}
-	return (1);
+	return (EXIT_SUCCESS);
 }
 
 static int	set_first_lvl(t_lem *lem, t_lvl *lvl)
@@ -90,34 +64,52 @@ static int	set_first_lvl(t_lem *lem, t_lvl *lvl)
 	if (!(ft_lstadd_new(lvl->rooms, lem->start)))
 	{
 		free_lvl(&lvl);
-		return (0);
+		return (EXIT_FAILURE);
 	}
 	lem->start->dist = 0;
-	return (1);
+	lem->end->has_lvl = 1;
+	return (EXIT_SUCCESS);
+}
+
+static int	set_lvls(t_lem *lem, t_lvl *lvl)
+{
+	if (set_first_lvl(lem, lvl) != EXIT_SUCCESS)
+		return (EXIT_FAILURE);
+	while (lvl->dist < lem->max_dist && lvl->rooms->first)
+	{
+		set_next_lvl_dists(lvl);
+		set_next_lvl_families(lvl, lem->end);
+		if (get_next_lvl_rooms(lem, lvl) != EXIT_SUCCESS)
+		{
+			free_lvl(&lvl);
+			return (EXIT_FAILURE);
+		}
+		if (lvl->dist + 1 == lem->end->dist)
+		{
+			lem->shortest = lvl->dist + 2;
+			lem->max_dist = lem->shortest + lem->nb_ants - 1;
+		}
+		lvl->dist++;
+	}
+	return (EXIT_SUCCESS);
 }
 
 int			set_graph(t_lem *lem)
 {
 	t_lvl	*lvl;
 
-	if (!(lvl = alloc_new_lvl())
-		|| !set_first_lvl(lem, lvl) || !set_lvls(lem, lvl))
-		return (0);
-	if (lem->start)
-		lem->start->dist = 0;
-	else
-	{
-		free_lvl(&lvl);
-		return (0);
-	}
-	if (lem->shortest != lem->end->dist + 1
-		&& !ft_lstfind(lem->start->children, lem->end))
-	{
-		free_lvl(&lvl);
-		return (PARSING_ERROR);
-	}
-	kill_end_children(lem->end, lem->max_dist);
+	if (!(lvl = alloc_new_lvl()))
+		return (EXIT_FAILURE);
+	if (set_lvls(lem, lvl) != EXIT_SUCCESS)
+		return (EXIT_FAILURE);
 	lem->max_dist = lvl->dist;
 	free_lvl(&lvl);
-	return (1);
+	if (lem->start == NULL)
+		return (EXIT_FAILURE);
+	if (lem->shortest != lem->end->dist + 1
+		&& !ft_lstfind(lem->start->children, lem->end))
+		return (PARSING_ERROR);
+	kill_end_children(lem->end, lem->max_dist);
+	lem->start->dist = 0;
+	return (EXIT_SUCCESS);
 }

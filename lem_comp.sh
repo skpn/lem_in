@@ -8,15 +8,19 @@ exec="${1}"
 
 echo "testing $exec"
 
-for ((i=2; i<=$#; i++)); do
-	file=${!i}
+idx=1
+while [ $idx -lt "$#" ] ; do
+	idx=$(($idx+1))
+	file=${!idx}
+	echo "----  $file  ----"
 	if [ ! -f $file ]; then
-		echo "$file does not exist"
+		echo "file does not exist"
 		exit 1
 	else
-		echo -ne "\n ----  $file  ----  "
-		time -p ./$exec < $file
+		time ./$exec < $file > output
 		grep -m 1 "required" $file
+		echo -ne "$exec number of lines: "
+		cat output | grep "^L.*$" | wc -l
 	fi
 done
 

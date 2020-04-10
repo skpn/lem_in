@@ -6,7 +6,7 @@
 /*   By: skpn <skpn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/19 15:41:30 by sikpenou          #+#    #+#             */
-/*   Updated: 2020/04/07 19:03:40 by skpn             ###   ########.fr       */
+/*   Updated: 2020/04/08 18:55:02 by skpn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,9 @@ int				get_rooms(t_lem *lem, char *anthill_copy)
 	if (check_same_name(lem, name) != EXIT_SUCCESS)
 		return (PARSING_ERROR);
 	if (!(room = alloc_new_room(name)))
-		return (MALLOC_ERROR);
+		return (ERR_MALLOC);
 	if (ft_h_add_elem(lem->table, room->name, room) != EXIT_SUCCESS)
-		return (ERROR_MALLOC);
+		return (ERR_MALLOC);
 	if (check_start_end == START)
 		lem->start = room;
 	else if (check_start_end == END)

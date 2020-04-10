@@ -6,7 +6,7 @@
 /*   By: skpn <skpn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/19 18:00:27 by sikpenou          #+#    #+#             */
-/*   Updated: 2020/04/08 09:43:54 by skpn             ###   ########.fr       */
+/*   Updated: 2020/04/08 18:55:02 by skpn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,11 @@ static int		add_links(t_lem *lem, char *name_1, char *name_2)
 	if (room_1 == room_2)
 		return (PARSING_ERROR);
 	if (ft_lstfind(room_1->children, room_2))
-		return (1);
+		return (EXIT_SUCCESS);
 	if (!ft_lstadd_new(room_1->children, room_2))
-		return (MALLOC_ERROR);
+		return (ERR_MALLOC);
 	if (!ft_lstadd_new(room_2->children, room_1))
-		return (MALLOC_ERROR);
+		return (ERR_MALLOC);
 	lem->nb_tubes++;
 	return (EXIT_SUCCESS);
 }
