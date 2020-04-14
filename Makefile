@@ -6,7 +6,7 @@
 #    By: skpn <skpn@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/02 21:32:05 by sikpenou          #+#    #+#              #
-#    Updated: 2020/04/08 19:05:52 by skpn             ###   ########.fr        #
+#    Updated: 2020/04/14 14:59:12 by skpn             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,11 +22,11 @@ DEBUG_FLAGS = -g3 -fsanitize=address -fsanitize=leak
 
 INCLUDE_FLAGS = $(foreach dir, $(INC_DIR), -I $(dir) )
 
+INC_DIR = $(shell find . -name 'inc' -type d)
+
 SRC_DIR = $(shell find src -mindepth 1 -type d)
 
 LIB_DIR = $(shell find lib -mindepth 1 -maxdepth 1 -type d)
-
-INC_DIR = $(shell find . -name 'inc' -type d)
 
 OBJ_DIR = obj
 
